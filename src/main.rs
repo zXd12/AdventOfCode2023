@@ -1,9 +1,7 @@
-use std::path::Path;
-
 mod questions;
+mod solver;
 
 fn main() {
-    println!("Hello, world!");
-    println!("Question 1 part 1 : {}", questions::question1::part_one(Path::new("inputs/input1_1.txt")).unwrap());
-    println!("Question 1 part 2 : {}", questions::question1::part_two(Path::new("inputs/input1_2.txt")).unwrap());
+    println!("Day 2 question 1 : {}", solver::solve(2, 1));
+    println!("Day 2 question 2 : {}", solver::solve(2, 2));
 }

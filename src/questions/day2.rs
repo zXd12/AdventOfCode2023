@@ -20,7 +20,7 @@ pub fn part_one(reader: io::BufReader<File>) -> io::Result<u32> {
                     "red" => count <= 12,
                     "green" => count <= 13,
                     "blue" => count <= 14,
-                    _ => true,
+                    _ => panic!("Invalid color name"),
                 };
                 if !is_valid {
                     break 'analyse_game;
@@ -54,7 +54,7 @@ pub fn part_two(reader: io::BufReader<File>) -> io::Result<u32> {
                     "red" => colors_min.0 = colors_min.0.max(count),
                     "green" => colors_min.1 = colors_min.1.max(count),
                     "blue" => colors_min.2 = colors_min.2.max(count),
-                    _ => panic!("Unvalid color name"),
+                    _ => panic!("Invalid color name"),
                 };
             }
         }

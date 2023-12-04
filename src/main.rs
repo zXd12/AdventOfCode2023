@@ -1,25 +1,26 @@
 mod questions;
 mod solver;
 
+const CURRENT_DAY: u32 = 4;
+
 fn main() {
 
-    println!("Day 1 question 1 : {}", solver::solve(1, 1, None));
-    println!("Day 1 question 2 : {}", solver::solve(1, 2, None));
-    println!("Day 2 question 1 : {}", solver::solve(2, 1, None));
-    println!("Day 2 question 2 : {}", solver::solve(2, 2, None));
-    println!("Day 3 question 1 : {}", solver::solve(3, 1, None));
-    println!("Day 3 question 2 : {}", solver::solve(3, 2, None));
+    for day in 1..=CURRENT_DAY {
+        for question in 1..=2 {
+            println!("Day {} question {} : {}", day, question, solver::solve(day, question, None));
+        }
+    }
 
-    // perf_graphs();    
+    // perfs(1e5 as u32);    
 }
 
-fn perf_graphs() {
-    println!("Day 1 question 1 perftest 1m iterations : {:.4?}ns avg", solver::perf_test(1, 1, None, 1e6 as u32));
-    println!("Day 1 question 2 perftest 1m iterations : {:.4?}ns avg", solver::perf_test(1, 2, None, 1e6 as u32));
 
-    println!("Day 2 question 1 perftest 1m iterations : {:.4?}ns avg", solver::perf_test(2, 1, None, 1e6 as u32));
-    println!("Day 2 question 2 perftest 1m iterations : {:.4?}ns avg", solver::perf_test(2, 2, None, 1e6 as u32));
 
-    println!("Day 3 question 1 perftest 1m iterations : {:.4?}ns avg", solver::perf_test(3, 1, None, 1e6 as u32));
-    println!("Day 3 question 2 perftest 1m iterations : {:.4?}ns avg", solver::perf_test(3, 2, None, 1e6 as u32));
+fn perfs(iterations: u32) {
+
+    for day in 1..=CURRENT_DAY {
+        for question in 1..=2 {
+            println!("Day {} question {} perftest 1m iterations : {:.4?}ns avg", day, question, solver::perf_test(day, question, None, iterations));
+        }
+    }
 }

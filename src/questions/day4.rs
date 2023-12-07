@@ -1,59 +1,56 @@
-use std::fs::File;
-use std::io::{self, BufRead};
+pub fn part_one(input: &str) -> u64 {
+    let mut result: u32 = 0;
 
-pub fn part_one(reader: io::BufReader<File>) -> io::Result<u32> {
-    let mut result = 0;
-
-    for line in reader.lines() {
-        let line = line?;
-
+    for line in input.lines() {
         let mut card_score = 1;
 
-        let mut line_parts = line.split([':', '|'].as_ref());
-        let winning_numbers = line_parts.nth(1).unwrap().trim().split_ascii_whitespace().collect::<Vec<&str>>();
+        let line_bytes = line.as_bytes();
+        let mut winning_table = [[false; 10]; 10];
 
-        for number in line_parts.next().unwrap().trim().split_ascii_whitespace() {
-            if winning_numbers.contains(&number) {
+        for i in (10..39).step_by(3) {
+            winning_table[if line_bytes[i] == 32 {0} else {line_bytes[i]- 48} as usize][(line_bytes[i + 1] - 48) as usize] = true;
+        }
+
+        for i in (42..117).step_by(3) {
+            if winning_table[if line_bytes[i] == 32 {0} else {line_bytes[i]- 48} as usize][(line_bytes[i + 1] - 48) as usize] {
                 card_score <<= 1;
             }
         }
-
         result += card_score >> 1;
     }
 
-    Ok(result)
+    result.into()
 }
 
-pub fn part_two(reader: io::BufReader<File>) -> io::Result<u32> {
-    let mut result = 0;
-    let mut card_duplicates = vec![1];
+pub fn part_two(input: &str) -> u64 {
+    let mut result: u32 = 0;
+    let mut card_duplicates = vec![];
+    card_duplicates.resize(input.lines().count(), 1);
 
-    for (i, line) in reader.lines().enumerate() {
-        let line = line?;
-
+    for (i, line) in input.lines().enumerate() {
         let mut card_score = 0;
 
-        let mut line_parts = line.split([':', '|'].as_ref());
-        let winning_numbers = line_parts.nth(1).unwrap().trim().split_ascii_whitespace().collect::<Vec<&str>>();
+        let line_bytes = line.as_bytes();
+        let mut winning_table = [[false; 10]; 10];
 
-        for number in line_parts.next().unwrap().trim().split_ascii_whitespace() {
-            if winning_numbers.contains(&number) {
+        for i in (10..39).step_by(3) {
+            winning_table[if line_bytes[i] == 32 {0} else {line_bytes[i]- 48} as usize][(line_bytes[i + 1] - 48) as usize] = true;
+        }
+
+        for i in (42..117).step_by(3) {
+            if winning_table[if line_bytes[i] == 32 {0} else {line_bytes[i]- 48} as usize][(line_bytes[i + 1] - 48) as usize] {
                 card_score += 1;
             }
         }
 
-        // resize the vector if needed
-        // only needed because we don't know the line count
-        if card_duplicates.len() < i+card_score+1 {
-            card_duplicates.resize(i+card_score+1, 1);
+        for j in 1..card_score + 1 {
+            if i + j < card_duplicates.len() {
+                card_duplicates[i + j] += card_duplicates[i];
+            }
         }
-
-        for j in 1..card_score+1 {
-            card_duplicates[i+j] += card_duplicates[i];
-        };
 
         result += card_duplicates[i];
     }
 
-    Ok(result)
+    result.into()
 }

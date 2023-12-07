@@ -1,66 +1,114 @@
-use std::fs::File;
-use std::io::{self, BufRead};
-
-pub fn part_one(reader: io::BufReader<File>) -> io::Result<u32> {
+pub fn part_one(input: &str) -> u64 {
     let mut result = 0;
 
-    for (index, line) in reader.lines().enumerate() {
-        let line = line?;
-        let pulls = line.split([';', ':'].as_ref()).collect::<Vec<&str>>()[1..].to_vec();
+    'line_loop: for (line_number, line) in input.lines().enumerate() {
+        let bytes = line.as_bytes();
+        let mut index: usize = 5; // skips "Game "
 
-        let mut is_valid = true;
+        loop {
+            if bytes[index] == b':' {
+                break;
+            }
+            index += 1;
+        }
 
-        'analyse_game: for pull in &pulls {
-            let colors: Vec<&str> = pull.split([','].as_ref()).collect();
-            for color in colors {
-                let values: Vec<&str> = color.split([' '].as_ref()).collect();
-                let count = values[1].parse::<u32>().unwrap();
-                let color_name = values[2];
-                is_valid &= match color_name {
-                    "red" => count <= 12,
-                    "green" => count <= 13,
-                    "blue" => count <= 14,
-                    _ => panic!("Invalid color name"),
-                };
-                if !is_valid {
-                    break 'analyse_game;
+        index += 2;
+
+        loop {
+            let mut value: u32 = (bytes[index] - b'0') as u32;
+            loop {
+                index += 1;
+                if bytes[index] == b' ' {
+                    break;
                 }
+                value *= 10;
+                value += (bytes[index] - b'0') as u32;
+            }
+
+            index += 1;
+
+            match bytes[index] {
+                b'r' => {
+                    if value > 12 {
+                        continue 'line_loop;
+                    }
+                    index += 5;
+                }
+                b'g' => {
+                    if value > 13 {
+                        continue 'line_loop;
+                    }
+                    index += 7;
+                }
+                b'b' => {
+                    if value > 14 {
+                        continue 'line_loop;
+                    }
+                    index += 6;
+                }
+                _ => panic!("Invalid color name"),
+            }
+
+            if index > bytes.len() - 1 {
+                result += line_number as u32 + 1;
+                continue 'line_loop;
             }
         }
-        if is_valid {
-            result += index as u32 + 1;
-        }
     }
-
-    Ok(result)
+    result.into()
 }
 
-pub fn part_two(reader: io::BufReader<File>) -> io::Result<u32> {
+pub fn part_two(input: &str) -> u64 {
     let mut result = 0;
 
-    for line in reader.lines() {
-        let line = line?;
-        let pulls = line.split([';', ':'].as_ref()).collect::<Vec<&str>>()[1..].to_vec();
+    'line_loop: for line in input.lines() {
+        let bytes = line.as_bytes();
+        let mut index: usize = 5; // skips "Game "
+        let mut max_amounts = (0, 0, 0);
 
-        let mut colors_min = (0, 0, 0);
-
-        for pull in &pulls {
-            let colors: Vec<&str> = pull.split([','].as_ref()).collect();
-            for color in colors {
-                let values: Vec<&str> = color.split([' '].as_ref()).collect();
-                let count = values[1].parse::<u32>().unwrap();
-                let color_name = values[2];
-                match color_name {
-                    "red" => colors_min.0 = colors_min.0.max(count),
-                    "green" => colors_min.1 = colors_min.1.max(count),
-                    "blue" => colors_min.2 = colors_min.2.max(count),
-                    _ => panic!("Invalid color name"),
-                };
+        loop {
+            if bytes[index] == b':' {
+                break;
             }
+            index += 1;
         }
 
-        result += colors_min.0 * colors_min.1 * colors_min.2;
-    }
+        index += 2;
 
-    Ok(result)
+        loop {
+            let mut value: u32 = (bytes[index] - b'0') as u32;
+            loop {
+                index += 1;
+                if bytes[index] == b' ' {
+                    break;
+                }
+                value *= 10;
+                value += (bytes[index] - b'0') as u32;
+            }
+
+            index += 1;
+
+            match bytes[index] {
+                b'r' => {
+                    max_amounts.0 = max_amounts.0.max(value);
+                    index += 5;
+                }
+                b'g' => {
+                    max_amounts.1 = max_amounts.1.max(value);
+                    index += 7;
+                }
+                b'b' => {
+                    max_amounts.2 = max_amounts.2.max(value);
+                    index += 6;
+                }
+                _ => panic!("Invalid color name"),
+            }
+
+            if index > bytes.len() - 1 {
+                result += max_amounts.0 * max_amounts.1 * max_amounts.2;
+                continue 'line_loop;
+            }
+        }
+    }
+    result.into()
 }

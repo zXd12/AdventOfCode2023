@@ -37,7 +37,7 @@ pub fn part_one(input: &str) -> u64 {
     result
 }
 
-pub fn part_two(input: &str) -> u64 {
+pub fn part_two_bruteforce(input: &str) -> u64 {
     let mut result: u64 = 0;
     let mut lines = input.lines();
 
@@ -90,7 +90,7 @@ pub fn part_two(input: &str) -> u64 {
     result
 }
 
-pub fn part_two_not_bruteforce(input: &str) -> u64 {
+pub fn part_two(input: &str) -> u64 {
     let mut result: u64 = 0;
     let mut lines = input.lines();
 
@@ -117,13 +117,17 @@ pub fn part_two_not_bruteforce(input: &str) -> u64 {
         }
     }
 
+    let mut cycles: Vec<(u32, u32)> = Default::default();
+    let mut z_positions: Vec<Vec<u32>> = Default::default();
+
     for starting_position in &positions {
-        let mut walked_map: [[[Vec<(u8, u32)>; 26]; 26]; 26] = Default::default();
+        let mut walked_map: [[[Vec<(u32, u32)>; 26]; 26]; 26] = Default::default();
         let mut position = starting_position;
 
         let mut zs = Vec::new();
-        let mut cycle = false;
         let mut direction_list_iterations: u32 = 0;
+
+        walked_map[position[0] as usize][position[1] as usize][position[2] as usize].push((0, 0));
 
         println!(
             "\n------------- {} -------------",
@@ -134,53 +138,39 @@ pub fn part_two_not_bruteforce(input: &str) -> u64 {
         );
 
         'compute_cycle: loop {
-            for (step, direction) in directions.iter().enumerate() {
+            for (step, direction) in directions.clone().iter().enumerate() {
                 position = &map[position[0] as usize][position[1] as usize][position[2] as usize]
                     [*direction as usize];
-
-                walked_map[position[0] as usize][position[1] as usize][position[2] as usize]
-                    .push((step as u8, direction_list_iterations));
 
                 if let Some((first_step, first_iteration)) = walked_map[position[0] as usize]
                     [position[1] as usize][position[2] as usize]
                     .iter()
-                    .find(|&&(left, right)| {
-                        left == step as u8 && right != direction_list_iterations
-                    })
-                { 
-                    if !cycle {
-                        /* println!(
-                            "found cycle at step {}",
-                            step + direction_list_iterations as usize * directions.len()
-                        );
-                        println!(
-                            "it spans over {} iterations, starting at iteration {} step {}",
-                            direction_list_iterations - first_iteration,
-                            first_iteration,
-                            first_step
-                        );
-                        println!("Zs: {:?}", zs);
-                        println!(
-                            "Position: {}",
-                            position
-                                .iter()
-                                .map(|&c| (c + b'A') as char)
-                                .collect::<String>()
-                        ); */
-                        cycle = true;
-                    }
-                    // println!("WalkTile: {:?}", walked_map[position[0] as usize][position[1] as usize][position[2] as usize]);
-                    // break 'compute_cycle;
+                    .find(|&&(left, _)| left == step as u32)
+                {
+                    cycles.push((
+                        first_step + first_iteration * directions.len() as u32,
+                        direction_list_iterations * directions.len() as u32 + step as u32
+                            - first_step
+                            + first_iteration * directions.len() as u32,
+                    ));
+                    break 'compute_cycle;
                 }
 
                 if position[2] == 25 {
-                    zs.push(position);
+                    zs.push(step as u32);
                 }
-            }
 
+                walked_map[position[0] as usize][position[1] as usize][position[2] as usize]
+                    .push((step as u32, direction_list_iterations));
+            }
             direction_list_iterations += 1;
         }
+
+        z_positions.push(zs.clone());
     }
+
+    println!("{:?}", cycles);
+    println!("{:?}", z_positions);
 
     result
 }

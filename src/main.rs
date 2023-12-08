@@ -1,3 +1,5 @@
+use questions::day5;
+
 mod questions;
 mod solver;
 
@@ -5,12 +7,14 @@ const CURRENT_DAY: u32 = 7;
 
 fn main() {
     
-    println!("Day 7 question 1 : {}", solver::solve(7, 1, None));
-    println!("Day 7 question 2 : {}", solver::solve(7, 2, None));
-    println!("Day 7 question 1 perfs : {}μs avg", solver::perf_test(7, 1, None, 1e3 as u32));
-    println!("Day 7 question 2 perfs : {}μs avg", solver::perf_test(7, 2, None, 1e3 as u32));
+    // let _ = day5::add_range_to_ranges((5,5), vec![(4,3), (9,3)]);
+
+    // println!("Day 8 question 1 : {}", solver::solve(8, 1, None));
+    println!("Day 8 question 2 : {}", solver::solve(8, 2, None));
+    // println!("Day 8 question 1 perfs : {}μs avg", solver::perf_test(8, 1, None, 1e3 as u32));
+    // println!("Day 8 question 2 perfs : {}μs avg", solver::perf_test(8, 2, None, 1e3 as u32));
     // solve_all();
-    // perfs(1e3 as u32);    
+    // perfs(1e4 as u32);    
 }
 
 fn solve_all() {

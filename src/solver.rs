@@ -52,15 +52,13 @@ fn get_function(day: u32, question: u32) -> fn(&str) -> u64 {
         (4, 1) => day4::part_one,
         (4, 2) => day4::part_two,
         (5, 1) => day5::part_one,
-        // (5, 2) => day5::part_two,
-        (5, 2) => {
-            // println!("unoptimized, returning result for part one");
-            day5::part_one
-        },
+        (5, 2) => day5::part_two,
         (6, 1) => day6::part_one,
         (6, 2) => day6::part_two,
         (7, 1) => day7::part_one,
         (7, 2) => day7::part_two,
+        (8, 1) => day8::part_one,
+        (8, 2) => day8::part_two,
         _ => panic!("Unsuported day or question!"),
     }
 }

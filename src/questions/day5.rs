@@ -1,6 +1,4 @@
-use std::ops::Index;
-
-pub fn part_one(input: &str) -> u64 {
+pub fn part_one(input: &str) -> i128 {
     let mut result = u64::MAX;
 
     let mut lines = input.lines();
@@ -87,10 +85,10 @@ pub fn part_one(input: &str) -> u64 {
         result = result.min(seed.try_into().unwrap());
     }
 
-    result
+    result.into()
 }
 
-pub fn part_two(input: &str) -> u64 {
+pub fn part_two(input: &str) -> i128 {
     let mut result = u64::MAX;
 
     let mut lines = input.lines();
@@ -185,11 +183,11 @@ pub fn part_two(input: &str) -> u64 {
             }
             old_map_ranges = current_map_ranges;
         }
-        println!("{:?}", old_map_ranges);
+        // println!("{:?}", old_map_ranges);
         result = result.min(old_map_ranges.iter().min_by(|a, b| a.0.cmp(&b.0)).unwrap_or(&(u64::MAX, 0_u64)).0);
     }
 
-    result
+    result.into()
 }
 
 fn map_range(range: (u64, u64), remapping: (u64, u64, u64)) -> Option<Vec<(u64, u64)>> {

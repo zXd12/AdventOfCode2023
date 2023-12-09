@@ -1,4 +1,4 @@
-pub fn part_one(input: &str) -> u64 {
+pub fn part_one(input: &str) -> i128 {
     let mut result = 0;
 
     'line_loop: for (line_number, line) in input.lines().enumerate() {
@@ -58,7 +58,7 @@ pub fn part_one(input: &str) -> u64 {
     result.into()
 }
 
-pub fn part_two(input: &str) -> u64 {
+pub fn part_two(input: &str) -> i128 {
     let mut result = 0;
 
     'line_loop: for line in input.lines() {

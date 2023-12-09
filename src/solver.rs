@@ -6,7 +6,7 @@ use std::{
 
 use crate::questions::*;
 
-pub fn solve(day: u32, question: u32, path: Option<&str>) -> u64 {
+pub fn solve(day: u32, question: u32, path: Option<&str>) -> i128 {
     let default_path = &format!("inputs/input{}.txt", day);
     let input_path = path.unwrap_or_else(|| default_path);
 
@@ -41,7 +41,7 @@ pub fn perf_test(day: u32, question: u32, path: Option<&str>, iterations: u32) -
     avg
 }
 
-fn get_function(day: u32, question: u32) -> fn(&str) -> u64 {
+fn get_function(day: u32, question: u32) -> fn(&str) -> i128 {
     match (day, question) {
         (1, 1) => day1::part_one,
         (1, 2) => day1::part_two,
@@ -58,7 +58,10 @@ fn get_function(day: u32, question: u32) -> fn(&str) -> u64 {
         (7, 1) => day7::part_one,
         (7, 2) => day7::part_two,
         (8, 1) => day8::part_one,
-        (8, 2) => day8::part_two,
+        (8, 2) => day8::part_one,
+        // (8, 2) => day8::part_two,
+        (9, 1) => day9::part_one,
+        (9, 2) => day9::part_two,
         _ => panic!("Unsuported day or question!"),
     }
 }

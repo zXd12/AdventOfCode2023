@@ -135,7 +135,7 @@ impl Window {
     }
 }
 
-pub fn part_one(input: &str) -> u64 {
+pub fn part_one(input: &str) -> i128 {
     let mut result = 0;
 
     let mut window = Window::new(140);
@@ -177,7 +177,7 @@ pub fn part_one(input: &str) -> u64 {
     result.into()
 }
 
-pub fn part_two(input: &str) -> u64 {
+pub fn part_two(input: &str) -> i128 {
     let mut result = 0;
 
     let mut window = Window::new(140);

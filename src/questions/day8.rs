@@ -1,4 +1,4 @@
-pub fn part_one(input: &str) -> u64 {
+pub fn part_one(input: &str) -> i128 {
     let mut result: u64 = 0;
     let mut lines = input.lines();
 
@@ -29,15 +29,15 @@ pub fn part_one(input: &str) -> u64 {
             position = map[position[0] as usize][position[1] as usize][position[2] as usize]
                 [direction as usize];
             if position == [25, 25, 25] {
-                return result;
+                return result.into();
             }
         }
     }
 
-    result
+    result.into()
 }
 
-pub fn part_two_bruteforce(input: &str) -> u64 {
+pub fn part_two_bruteforce(input: &str) -> i128 {
     let mut result: u64 = 0;
     let mut lines = input.lines();
 
@@ -64,8 +64,6 @@ pub fn part_two_bruteforce(input: &str) -> u64 {
         }
     }
 
-    println!("{:?}", positions);
-
     loop {
         for direction in directions.clone() {
             let mut all_output_ok = 0;
@@ -82,15 +80,15 @@ pub fn part_two_bruteforce(input: &str) -> u64 {
             }
             positions = new_position;
             if all_output_ok == positions.len() {
-                return result;
+                return result.into();
             }
         }
     }
 
-    result
+    result.into()
 }
 
-pub fn part_two(input: &str) -> u64 {
+pub fn part_two(input: &str) -> i128 {
     let mut result: u64 = 0;
     let mut lines = input.lines();
 
@@ -129,14 +127,6 @@ pub fn part_two(input: &str) -> u64 {
 
         walked_map[position[0] as usize][position[1] as usize][position[2] as usize].push((0, 0));
 
-        println!(
-            "\n------------- {} -------------",
-            position
-                .iter()
-                .map(|&c| (c + b'A') as char)
-                .collect::<String>()
-        );
-
         'compute_cycle: loop {
             for (step, direction) in directions.clone().iter().enumerate() {
                 position = &map[position[0] as usize][position[1] as usize][position[2] as usize]
@@ -169,8 +159,8 @@ pub fn part_two(input: &str) -> u64 {
         z_positions.push(zs.clone());
     }
 
-    println!("{:?}", cycles);
-    println!("{:?}", z_positions);
+    // println!("{:?}", cycles);
+    // println!("{:?}", z_positions);
 
-    result
+    result.into()
 }

@@ -1,4 +1,4 @@
-pub fn part_one(input: &str) -> u64 {
+pub fn part_one(input: &str) -> i128 {
     let mut result: u32 = 0;
 
     for line in input.lines() {
@@ -22,7 +22,7 @@ pub fn part_one(input: &str) -> u64 {
     result.into()
 }
 
-pub fn part_two(input: &str) -> u64 {
+pub fn part_two(input: &str) -> i128 {
     let mut result: u32 = 0;
     let mut card_duplicates = vec![];
     card_duplicates.resize(input.lines().count(), 1);

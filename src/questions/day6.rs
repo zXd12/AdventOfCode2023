@@ -22,7 +22,7 @@ fn get_bound(time: u64, distance: u64) -> u64 {
         - time
 }
 
-pub fn part_one(input: &str) -> u64 {
+pub fn part_one(input: &str) -> i128 {
 
     let mut lines= input.lines();
 
@@ -33,15 +33,15 @@ pub fn part_one(input: &str) -> u64 {
         .iter()
         .zip(distances.iter())
         .map(|(&time, &distance)| get_bound(time, distance))
-        .product()
+        .product::<u64>().into()
 }
 
-pub fn part_two(input: &str) -> u64 {
+pub fn part_two(input: &str) -> i128 {
 
     let mut lines= input.lines();
 
     get_bound(
         line_to_single_u64(lines.next().unwrap().to_string()),
         line_to_single_u64(lines.next().unwrap().to_string()),
-    )
+    ).into()
 }

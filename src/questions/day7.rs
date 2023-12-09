@@ -25,7 +25,7 @@ fn insert_into(hands: &mut [Vec<([usize; 5], u32)>; 13], hand: [usize; 5], value
     );
 }
 
-pub fn part_one(input: &str) -> u64 {
+pub fn part_one(input: &str) -> i128 {
     let mut result: u32 = 0;
 
     let mut hands: [[Vec<([usize; 5], u32)>; 13]; 7] = Default::default();
@@ -108,7 +108,7 @@ pub fn part_one(input: &str) -> u64 {
     result.into()
 }
 
-pub fn part_two(input: &str) -> u64 {
+pub fn part_two(input: &str) -> i128 {
     let mut result: u32 = 0;
     let mut hands: [[Vec<([usize; 5], u32)>; 13]; 7] = Default::default();
     'line: for line in input.lines() {

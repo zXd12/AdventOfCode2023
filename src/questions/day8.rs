@@ -115,7 +115,7 @@ pub fn part_two(input: &str) -> i128 {
         }
     }
 
-    let mut cycles: Vec<(u32, u32)> = Default::default();
+    let mut cycles: Vec<(u64, u64)> = Default::default();
     let mut z_positions: Vec<Vec<u32>> = Default::default();
 
     for starting_position in &positions {
@@ -138,16 +138,16 @@ pub fn part_two(input: &str) -> i128 {
                     .find(|&&(left, _)| left == step as u32)
                 {
                     cycles.push((
-                        first_step + first_iteration * directions.len() as u32,
-                        direction_list_iterations * directions.len() as u32 + step as u32
+                        (first_step + first_iteration) as u64 * directions.len() as u64,
+                        (direction_list_iterations * directions.len() as u32 + step as u32
                             - first_step
-                            + first_iteration * directions.len() as u32,
+                            + first_iteration * directions.len() as u32) as u64,
                     ));
                     break 'compute_cycle;
                 }
 
                 if position[2] == 25 {
-                    zs.push(step as u32);
+                    zs.push(step as u32 + directions.len() as u32 * direction_list_iterations);
                 }
 
                 walked_map[position[0] as usize][position[1] as usize][position[2] as usize]
@@ -159,8 +159,31 @@ pub fn part_two(input: &str) -> i128 {
         z_positions.push(zs.clone());
     }
 
-    // println!("{:?}", cycles);
-    // println!("{:?}", z_positions);
-
+    // result = cycles[0..].iter().skip(1).fold(cycles[0], |acc, cycle| cr(acc, *cycle)).1;
+    result = cycles[0..].iter().skip(1).fold(cycles[0].1, |acc,(_, cycle_size) | lcm(acc, *cycle_size));
     result.into()
+}
+
+fn gcd(number1: u64, number2: u64) -> u64 {
+    let mut biggest_number = number1.max(number2);
+    let mut smallest_number = number1.min(number2);
+    let mut remainder = biggest_number%smallest_number;
+    while remainder != 0 {
+        biggest_number = smallest_number;
+        smallest_number = remainder;
+        remainder = biggest_number%smallest_number;
+    }
+    smallest_number
+}
+
+fn lcm(number1: u64, number2: u64) -> u64 {
+    number1 * number2 / gcd(number1, number2)
+}
+
+fn cr(cycle1: (u64, u64), cycle2: (u64, u64)) -> (u64, u64) {
+    let mut cycle1_value = cycle1.0;
+    while cycle1_value%cycle2.1 != cycle2.0 {
+        cycle1_value += cycle1.1%cycle2.1;
+    }
+    (cycle1_value, lcm(cycle1.1, cycle2.1))
 }

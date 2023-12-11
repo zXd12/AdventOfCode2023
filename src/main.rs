@@ -1,18 +1,17 @@
-use questions::day5;
-
 mod questions;
 mod solver;
 
-const CURRENT_DAY: u32 = 9;
+const CURRENT_DAY: u32 = 10;
 
 fn main() {
     
     // let _ = day5::add_range_to_ranges((5,5), vec![(4,3), (9,3)]);
 
-    // println!("Day 9 question 1 : {}", solver::solve(9, 1, None));
-    println!("Day 8 question 2 : {}", solver::solve(8, 2, None));
-    println!("Day 8 question 2 perfs : {}μs avg", solver::perf_test(8, 2, None, 1e2 as u32));
-    // println!("Day 9 question 2 perfs : {}μs avg", solver::perf_test(9, 2, None, 1e3 as u32));
+    println!("Day 11 question 1 : {}", solver::solve(11, 1, None));
+    println!("Day 11 question 2 : {}", solver::solve(11, 2, None));
+    // println!("Day 10 question 2 : {}", solver::solve(10, 2, Some("inputs/input10_2.txt")));
+    // println!("Day 10 question 1 perfs : {}μs avg", solver::perf_test(10, 1, None, 1e3 as u32));
+    // println!("Day 10 question 2 perfs : {}μs avg", solver::perf_test(10, 2, None, 1e3 as u32));
     // solve_all();
     // perfs(1e3 as u32);    
 }

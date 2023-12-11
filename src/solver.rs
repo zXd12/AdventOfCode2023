@@ -62,6 +62,10 @@ fn get_function(day: u32, question: u32) -> fn(&str) -> i128 {
         (8, 2) => day8::part_two,
         (9, 1) => day9::part_one,
         (9, 2) => day9::part_two,
+        (10, 1) => day10::part_one,
+        (10, 2) => day10::part_two,
+        (11, 1) => day11::part_one,
+        (11, 2) => day11::part_two,
         _ => panic!("Unsuported day or question!"),
     }
 }
